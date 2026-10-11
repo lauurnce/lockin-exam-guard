@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380" role="img" aria-labelledby="t d">
+  <title id="t">LockIn</title>
+  <desc id="d">The LockIn icon cycles through its four states: off (gray), locked in (green, pulsing), triggered (red) and submitted (gray with a check mark), while the professor's Live Status sheet updates to match.</desc>
+  <style>
+  text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif }
+  
+  @keyframes p0 { 0%, 22% { opacity: 1 } 25%, 97% { opacity: 0 } 100% { opacity: 1 } }
+  @keyframes p1 { 0%, 22% { opacity: 0 } 25%, 47% { opacity: 1 } 50%, 100% { opacity: 0 } }
+  @keyframes p2 { 0%, 47% { opacity: 0 } 50%, 72% { opacity: 1 } 75%, 100% { opacity: 0 } }
+  @keyframes p3 { 0%, 72% { opacity: 0 } 75%, 97% { opacity: 1 } 100% { opacity: 0 } }
+  .p0 { animation: p0 12s infinite; opacity: 0 }
+  .p1 { animation: p1 12s infinite; opacity: 1 }
+  .p2 { animation: p2 12s infinite; opacity: 0 }
+  .p3 { animation: p3 12s infinite; opacity: 0 }
+
+  @keyframes tint {
+    0%, 22% { fill: #F4F4F5 } 25%, 47% { fill: #DCFCE7 }
+    50%, 72% { fill: #FEE2E2 } 75%, 97% { fill: #F4F4F5 } 100% { fill: #F4F4F5 }
+  }
+  @keyframes dot {
+    0%, 22% { fill: #A1A1AA } 25%, 47% { fill: #16A34A }
+    50%, 72% { fill: #DC2626 } 75%, 97% { fill: #A1A1AA } 100% { fill: #A1A1AA }
+  }
+  @keyframes pulse { 0% { transform: scale(1); opacity: .6 } 100% { transform: scale(1.9); opacity: 0 } }
+  @keyframes bar { 0% { transform: scaleX(0) } 100% { transform: scaleX(1) } }
+  @keyframes blink { 0%, 60% { opacity: 1 } 61%, 100% { opacity: 0 } }
+  .tint { animation: tint 12s infinite; fill: #DCFCE7 }
+  .dot { animation: dot 12s infinite; fill: #16A34A }
+  .ring { animation: pulse 2s ease-out infinite; transform-box: fill-box; transform-origin: center }
+  .bar { animation: bar 3s linear infinite, dot 12s infinite; transform-box: fill-box; transform-origin: left; fill: #16A34A }
+  .live { animation: blink 1.2s infinite }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important }
+    .bar { transform: scaleX(1) }
+  }
+  </style>
+
+  <rect class="tint" width="1200" height="380" rx="24"/>
+  <rect x="32" y="32" width="1136" height="316" rx="20" fill="#FFFFFF" stroke="#E4E4E7"/>
+
+  <!-- Icon: rounded-square outline with a state-colored dot, as drawn by extension/lib/icons.js -->
+  <g transform="translate(96 110)">
+    <rect x="8" y="8" width="144" height="144" rx="34" fill="none" stroke="#3F3F46" stroke-width="14"/>
+    <g class="p1"><circle class="ring" cx="80" cy="80" r="32" fill="none" stroke="#16A34A" stroke-width="6"/></g>
+    <circle class="dot" cx="80" cy="80" r="32"/>
+    <g class="p2"><rect x="76" y="62" width="8" height="24" rx="4" fill="#FFFFFF"/><circle cx="80" cy="96" r="4.5" fill="#FFFFFF"/></g>
+    <g class="p3"><path d="M66 81 l10 10 l19 -21" fill="none" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+
+  <text x="296" y="160" font-size="76" font-weight="700" letter-spacing="-2.5" fill="#18181B">LockIn</text>
+  <text x="300" y="198" font-size="21" fill="#71717A">Minimalist exam lockdown for Google Forms.</text>
+  <text x="300" y="226" font-size="21" fill="#71717A">Make cheating visible, not impossible.</text>
+  
+    <g class="p0">
+      <rect x="300" y="248" width="460" height="40" rx="20" fill="#F4F4F5" stroke="#E4E4E7"/>
+      <circle cx="324" cy="268" r="6" fill="#52525B"/>
+      <text x="340" y="274" font-size="17" fill="#18181B"><tspan font-weight="650">Off</tspan><tspan fill="#71717A"> · LockIn does nothing</tspan></text>
+    </g>
+    <g class="p1">
+      <rect x="300" y="248" width="460" height="40" rx="20" fill="#DCFCE7" stroke="#E4E4E7"/>
+      <circle cx="324" cy="268" r="6" fill="#16A34A"/>
+      <text x="340" y="274" font-size="17" fill="#18181B"><tspan font-weight="650">Locked in</tspan><tspan fill="#71717A"> · exam running, nothing flagged</tspan></text>
+    </g>
+    <g class="p2">
+      <rect x="300" y="248" width="460" height="40" rx="20" fill="#FEE2E2" stroke="#E4E4E7"/>
+      <circle cx="324" cy="268" r="6" fill="#DC2626"/>
+      <text x="340" y="274" font-size="17" fill="#18181B"><tspan font-weight="650">Triggered</tspan><tspan fill="#71717A"> · 1 violation logged · chatgpt.com</tspan></text>
+    </g>
+    <g class="p3">
+      <rect x="300" y="248" width="460" height="40" rx="20" fill="#F4F4F5" stroke="#E4E4E7"/>
+      <circle cx="324" cy="268" r="6" fill="#52525B"/>
+      <text x="340" y="274" font-size="17" fill="#18181B"><tspan font-weight="650">Submitted</tspan><tspan fill="#71717A"> · form sent, LockIn turns off</tspan></text>
+    </g>
+
+  <!-- Professor's Live Status sheet -->
+  <g>
+    <rect x="800" y="84" width="300" height="196" rx="14" fill="#FFFFFF" stroke="#E4E4E7"/>
+    <text x="822" y="116" font-size="14" font-weight="650" fill="#18181B">Live Status</text>
+    <g class="live"><circle cx="1040" cy="111" r="4" fill="#DC2626"/></g>
+    <text x="1050" y="116" font-size="11" font-weight="700" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">LIVE</text>
+    <line x1="800" y1="132" x2="1100" y2="132" stroke="#E4E4E7"/>
+    <text x="822" y="152" font-size="11" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">STUDENT</text>
+    <text x="952" y="152" font-size="11" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">STATUS</text>
+    <text x="822" y="178" font-size="14" fill="#18181B">Student 01</text>
+    
+      <g class="p0">
+        <rect x="952" y="160" width="118" height="26" rx="6" fill="#A1A1AA"/>
+        <text x="1011" y="178" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">OFF</text>
+      </g>
+      <g class="p1">
+        <rect x="952" y="160" width="118" height="26" rx="6" fill="#16A34A"/>
+        <text x="1011" y="178" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ARMED</text>
+      </g>
+      <g class="p2">
+        <rect x="952" y="160" width="118" height="26" rx="6" fill="#DC2626"/>
+        <text x="1011" y="178" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">TRIGGERED</text>
+      </g>
+      <g class="p3">
+        <rect x="952" y="160" width="118" height="26" rx="6" fill="#A1A1AA"/>
+        <text x="1011" y="178" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">SUBMITTED</text>
+      </g>
+    <text x="822" y="216" font-size="14" fill="#18181B">Student 02</text>
+    <rect x="952" y="198" width="118" height="26" rx="6" fill="#16A34A"/>
+    <text x="1011" y="216" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ARMED</text>
+    <text x="822" y="254" font-size="14" fill="#18181B">Student 03</text>
+    <rect x="952" y="236" width="118" height="26" rx="6" fill="#16A34A"/>
+    <text x="1011" y="254" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">ARMED</text>
+  </g>
+
+  <rect x="96" y="310" width="1004" height="4" rx="2" fill="#E4E4E7"/>
+  <rect class="bar" x="96" y="310" width="1004" height="4" rx="2"/>
+</svg>
