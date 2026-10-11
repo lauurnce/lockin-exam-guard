@@ -1,0 +1,145 @@
+<!doctype html>
+<!--
+  popup.html
+  The LockIn toolbar popup (360px wide). Shows the current exam state
+  (off / armed / triggered / submitted) as a colored orb, collects the exam
+  code and student details, runs the pre-check, locks in, and offers the
+  professor-PIN actions (End exam, Clear warning). All logic is in popup.js.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=360">
+  <title>LockIn</title>
+  <link rel="stylesheet" href="popup.css">
+  <script type="module" src="popup.js"></script>
+</head>
+<body data-mode="off">
+  <main class="card" aria-live="polite">
+    <header class="top">
+      <span class="brand">LockIn</span>
+      <span class="version" id="version">v1.0.0</span>
+    </header>
+
+    <section class="hero">
+      <div class="orb" id="orb" aria-hidden="true">
+        <svg class="orb-check" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      </div>
+      <h1 class="state-title" id="stateTitle">Off</h1>
+      <p class="state-sub" id="stateSub">Exam mode is not running</p>
+    </section>
+
+    <!-- OFF: student details + pre-check -->
+    <section id="viewOff" class="view">
+      <form id="offForm" class="fields" novalidate autocomplete="off">
+        <label class="field">
+          <span class="label">Exam code</span>
+          <input id="code" name="code" type="text" spellcheck="false" placeholder="Paste the code from your professor">
+        </label>
+        <label class="field">
+          <span class="label">Full name</span>
+          <input id="name" name="name" type="text" placeholder="Juan Dela Cruz">
+        </label>
+        <div class="row">
+          <label class="field grow">
+            <span class="label">Student no.</span>
+            <input id="studentNo" name="studentNo" type="text" inputmode="text">
+          </label>
+          <label class="field section">
+            <span class="label">Section</span>
+            <input id="section" name="section" type="text">
+          </label>
+        </div>
+
+        <p class="companion" id="companionLine">
+          <span class="dot" id="companionDot"></span>
+          <span>Desktop companion: <span id="companionText">Checked when you lock in</span></span>
+        </p>
+
+        <div class="notice notice-error" id="errorBox" hidden>
+          <ul id="errorList"></ul>
+        </div>
+
+        <div class="notice notice-error" id="installBox" hidden>
+          <p class="notice-title" id="installTitle">Desktop companion not installed</p>
+          <p>Open a terminal in the <strong>lockin-exam-guard</strong> folder and run:</p>
+          <div class="cmd">
+            <code id="installCmd"></code>
+            <button type="button" class="mini" id="copyInstall">Copy</button>
+          </div>
+          <p class="hint">Then restart your browser and press Check again.</p>
+        </div>
+
+        <div class="notice notice-error" id="appsBox" hidden>
+          <p class="notice-title">Close these first: <span id="appsList"></span></p>
+          <p class="hint">Quit them completely, then press Check again.</p>
+        </div>
+
+        <div class="notice notice-ok" id="readyBox" hidden>
+          <p>All clear. LockIn will open <strong id="readyExam">the exam</strong> in a new window.</p>
+        </div>
+
+        <button type="submit" class="primary" id="primaryOff">Check and lock in</button>
+      </form>
+      <p class="last" id="lastSession" hidden></p>
+    </section>
+
+    <!-- ARMED / TRIGGERED -->
+    <section id="viewActive" class="view" hidden>
+      <dl class="facts">
+        <div><dt>Exam</dt><dd id="actExam">-</dd></div>
+        <div><dt>Student</dt><dd id="actStudent">-</dd></div>
+        <div><dt>Elapsed</dt><dd id="actElapsed" class="num">0:00</dd></div>
+        <div><dt>Violations</dt><dd id="actCount" class="num">0</dd></div>
+      </dl>
+
+      <ol class="log" id="violationLog" hidden></ol>
+
+      <button type="button" class="primary" id="goExam">Go to exam</button>
+      <div class="text-actions">
+        <button type="button" class="link" id="clearBtn" hidden>Clear warning</button>
+        <button type="button" class="link" id="endBtn">End exam</button>
+      </div>
+
+      <form id="pinForm" class="pin" hidden novalidate>
+        <label class="field">
+          <span class="label" id="pinLabel">Professor PIN to end the exam</span>
+          <input id="pin" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN">
+        </label>
+        <p class="pin-error" id="pinError" hidden></p>
+        <div class="row">
+          <button type="button" class="secondary" id="pinCancel">Cancel</button>
+          <button type="submit" class="primary" id="pinSubmit">End exam</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- SUBMITTED -->
+    <section id="viewSubmitted" class="view" hidden>
+      <dl class="facts">
+        <div><dt>Exam</dt><dd id="subExam">-</dd></div>
+        <div><dt>Time taken</dt><dd id="subTime" class="num">-</dd></div>
+        <div><dt>Violations</dt><dd id="subCount" class="num">0</dd></div>
+      </dl>
+      <button type="button" class="primary" id="doneBtn">Done</button>
+    </section>
+
+    <footer class="foot">
+      <button type="button" class="link" id="openSetup">Professor setup</button>
+      <span class="sep" aria-hidden="true">·</span>
+      <button type="button" class="link" id="toggleCollect" aria-expanded="false" aria-controls="collectBox">What we collect</button>
+    </footer>
+
+    <div class="collect" id="collectBox" hidden>
+      <p>LockIn only works while you are locked in. It collects:</p>
+      <ul>
+        <li>Your name, student no., section and the exam name</li>
+        <li>Each blocked attempt, with the time and what was opened</li>
+        <li>How long you were away from the exam window</li>
+        <li>A "still here" signal once a minute</li>
+      </ul>
+      <p>It never collects screenshots, keystrokes, what you type or paste, your browsing history or file contents.</p>
+    </div>
+  </main>
+</body>
+</html>

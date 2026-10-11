@@ -1,0 +1,136 @@
+<!doctype html>
+<!--
+  options.html
+  "Professor setup": the extension's options page. The professor describes one
+  exam (form link, allowed sites, PIN, optional live dashboard webhook, rules)
+  and generates an exam code to share with students. Logic is in options.js.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LockIn · Professor setup</title>
+  <link rel="stylesheet" href="options.css">
+  <script type="module" src="options.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <p class="brand"><span class="dot" aria-hidden="true"></span>LockIn</p>
+      <h1>Professor setup</h1>
+      <p class="lede">Describe one exam and generate a code. Students paste the code into LockIn before they start. One code is one exam.</p>
+    </header>
+
+    <form id="setup" class="stack" novalidate autocomplete="off">
+      <section class="card">
+        <h2>Exam</h2>
+        <label class="field">
+          <span class="label">Exam name</span>
+          <input id="examName" type="text" placeholder="COMP 018 Quiz 2" maxlength="120" aria-describedby="examName-err">
+          <span class="err" id="examName-err"></span>
+        </label>
+        <label class="field">
+          <span class="label">Google Form link</span>
+          <input id="formUrl" type="url" spellcheck="false" placeholder="https://docs.google.com/forms/d/e/…/viewform" aria-describedby="formUrl-help formUrl-err">
+          <span class="help" id="formUrl-help">Use the link you send students (the "Send" link or a forms.gle short link).</span>
+          <span class="err" id="formUrl-err"></span>
+        </label>
+        <label class="field">
+          <span class="label">Extra allowed sites <span class="opt">optional</span></span>
+          <textarea id="allow" rows="3" spellcheck="false" placeholder="desmos.com&#10;example.edu/handouts" aria-describedby="allow-help allow-err"></textarea>
+          <span class="help" id="allow-help">One per line. Subdomains are included. Google sign-in is always allowed.</span>
+          <span class="err" id="allow-err"></span>
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Professor PIN</h2>
+        <p class="note">Needed to end an exam early or clear a warning on a student's screen. It is never stored as plain text.</p>
+        <div class="row">
+          <label class="field">
+            <span class="label">PIN</span>
+            <input id="pin" type="password" inputmode="numeric" autocomplete="new-password" placeholder="At least 4 digits" aria-describedby="pin-err">
+            <span class="err" id="pin-err"></span>
+          </label>
+          <label class="field">
+            <span class="label">Confirm PIN</span>
+            <input id="pin2" type="password" inputmode="numeric" autocomplete="new-password" aria-describedby="pin2-err">
+            <span class="err" id="pin2-err"></span>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Live dashboard <span class="opt">optional</span></h2>
+        <label class="field">
+          <span class="label">Webhook URL</span>
+          <input id="webhookUrl" type="url" spellcheck="false" placeholder="https://script.google.com/macros/s/…/exec" aria-describedby="webhookUrl-help webhookUrl-err">
+          <span class="help" id="webhookUrl-help">Leave empty to keep everything on the student's computer. See the steps below.</span>
+          <span class="err" id="webhookUrl-err"></span>
+        </label>
+        <label class="field">
+          <span class="label">Shared secret</span>
+          <input id="secret" type="text" spellcheck="false" maxlength="200" placeholder="Same as SHARED_SECRET in Code.gs">
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Rules</h2>
+        <div class="toggles">
+          <label class="toggle"><input type="checkbox" id="requireCompanion" role="switch"><span class="track" aria-hidden="true"></span>
+            <span><span class="t-title">Require desktop companion</span><span class="t-help">Sees Word, Notes, PDF readers and the ChatGPT app.</span></span></label>
+          <label class="toggle"><input type="checkbox" id="fullscreen" role="switch"><span class="track" aria-hidden="true"></span>
+            <span><span class="t-title">Fullscreen exam window</span><span class="t-help">Leaving fullscreen is logged as a warning, not a violation.</span></span></label>
+          <label class="toggle"><input type="checkbox" id="blockPaste" role="switch"><span class="track" aria-hidden="true"></span>
+            <span><span class="t-title">Block paste</span><span class="t-help">Paste into the form is stopped and recorded.</span></span></label>
+          <label class="toggle"><input type="checkbox" id="blockContextMenu" role="switch"><span class="track" aria-hidden="true"></span>
+            <span><span class="t-title">Block right-click</span><span class="t-help">Right-click in the form is stopped and recorded.</span></span></label>
+        </div>
+
+        <label class="field grace">
+          <span class="label">Grace period before "left the browser" counts (seconds)</span>
+          <input id="grace" type="number" min="0" max="10" step="0.5" value="1.5" aria-describedby="grace-err">
+          <span class="err" id="grace-err"></span>
+        </label>
+
+        <fieldset class="cats">
+          <legend class="label">Sites and apps to block</legend>
+          <div id="categories" class="cat-grid"></div>
+        </fieldset>
+      </section>
+
+      <div class="actions">
+        <p class="form-err" id="formErr" role="alert" hidden></p>
+        <button type="submit" class="primary" id="generate">Generate exam code</button>
+      </div>
+
+      <section class="card result" id="result" hidden aria-live="polite">
+        <h2>Exam code for <span id="resultName"></span></h2>
+        <textarea id="code" readonly rows="5" spellcheck="false" aria-label="Exam code"></textarea>
+        <div class="result-row">
+          <button type="button" class="primary small" id="copy">Copy</button>
+          <span class="meta" id="resultMeta"></span>
+        </div>
+        <p class="note strong">Share this code with your students. Keep the PIN to yourself.</p>
+      </section>
+    </form>
+
+    <section class="card steps" aria-labelledby="dash-h">
+      <h2 id="dash-h">Live dashboard setup</h2>
+      <p class="note">A Google Sheet that shows one row per student, updated live. Do this once; reuse the URL for every exam.</p>
+      <ol>
+        <li>Create a new Google Sheet.</li>
+        <li>Open <b>Extensions → Apps Script</b>, delete the sample code and paste in <code>apps-script/Code.gs</code> from the LockIn folder.</li>
+        <li>Optional: put a secret between the quotes in <code>const SHARED_SECRET = "";</code> and type the same secret above.</li>
+        <li>Choose the <code>setup</code> function and press <b>Run</b> once. Allow the permissions it asks for.</li>
+        <li><b>Deploy → New deployment → Web app</b>. Execute as <b>Me</b>, who has access <b>Anyone</b>. Deploy.</li>
+        <li>Copy the URL ending in <code>/exec</code> into Webhook URL above.</li>
+        <li>In the Sheet, set <b>File → Settings → Calculation → Recalculation</b> to "On change and every minute" so the Online column stays current.</li>
+      </ol>
+      <p class="note">Full instructions are in <code>README.md</code> in the LockIn folder, or on <a href="https://github.com/lauurnce/lockin-exam-guard#readme" target="_blank" rel="noopener">GitHub</a>.</p>
+    </section>
+
+    <footer class="foot">LockIn <span id="version"></span></footer>
+  </main>
+</body>
+</html>

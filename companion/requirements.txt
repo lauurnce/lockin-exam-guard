@@ -1,0 +1,2 @@
+# LockIn companion dependencies (installed into companion/.venv by the installers).
+psutil>=5.9

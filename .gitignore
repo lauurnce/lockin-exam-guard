@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Private signing key (only the public key goes into manifest.json)
+*.pem
+scripts/.keys/
+
+# Generated per machine by the companion install scripts
+companion/lockin_host.sh
+companion/lockin_host.bat
+companion/com.lockin.companion.json
+
+# OS and logs
+.DS_Store
+*.log

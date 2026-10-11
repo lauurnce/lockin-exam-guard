@@ -1,0 +1,96 @@
+/*
+ * blocked.css
+ * Styles for the blocked page: red-tinted soft background, one centered white
+ * card with a red dot, the site and category, the recorded time and a red
+ * "Back to exam" button. Light theme only; reduced motion respected.
+ */
+
+:root {
+  --bg: #F4F4F5;
+  --surface: #FFFFFF;
+  --text: #18181B;
+  --muted: #71717A;
+  --border: #E4E4E7;
+  --gray: #A1A1AA;
+  --green: #16A34A;
+  --green-soft: #DCFCE7;
+  --red: #DC2626;
+  --red-soft: #FEE2E2;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: var(--red-soft);
+  color: var(--text);
+  font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+[hidden] { display: none !important; }
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid #FECACA;
+  border-radius: 12px;
+  padding: 36px 28px 26px;
+  text-align: center;
+}
+
+.dot {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 8px var(--red-soft);
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.site { margin: 0; font-size: 15px; font-weight: 550; overflow-wrap: anywhere; }
+.url {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.when { margin: 6px 0 24px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.primary {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  background: var(--red);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 120ms ease;
+}
+.primary:hover:not(:disabled) { filter: brightness(1.08); }
+.primary:disabled { opacity: 0.6; cursor: default; }
+.primary:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+.fine { margin: 14px 0 0; color: var(--muted); font-size: 12.5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

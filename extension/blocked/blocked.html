@@ -1,0 +1,28 @@
+<!doctype html>
+<!--
+  blocked.html
+  Shown in the exam tab when the student tries to open a site that is not
+  allowed during the exam. Reads u (url), c (category), s (site name) and
+  t (timestamp) from the query string; "Back to exam" sends FOCUS_EXAM.
+  Logic is in blocked.js.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blocked during your exam</title>
+  <link rel="stylesheet" href="blocked.css">
+  <script type="module" src="blocked.js"></script>
+</head>
+<body>
+  <main class="card" role="alert">
+    <span class="dot" aria-hidden="true"></span>
+    <h1>Blocked during your exam</h1>
+    <p class="site"><span id="site">This site</span> · <span id="category">Other site</span></p>
+    <p class="url" id="url" hidden></p>
+    <p class="when" id="when">Recorded just now</p>
+    <button type="button" class="primary" id="back">Back to exam</button>
+    <p class="fine">This attempt was logged. Your professor can see it.</p>
+  </main>
+</body>
+</html>

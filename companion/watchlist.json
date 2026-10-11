@@ -1,0 +1,68 @@
+{
+  "_comment": "LockIn companion watchlist. Read by lockin_host.py. 'categories' maps a category to macOS bundle IDs (exact), Windows exe names (case-insensitive exact) and display names (case-insensitive whole-word substring). IGNORE wins over everything. 'browserFamilies' maps the browserFamily string sent by the extension to the identifiers of that browser so it is never flagged as 'another browser'. See the header of lockin_host.py.",
+  "version": 1,
+  "categories": {
+    "IGNORE": {
+      "bundleIds": ["us.zoom.xos", "us.zoom.Launcher", "com.microsoft.teams", "com.microsoft.teams2"],
+      "exes": ["Zoom.exe", "ZoomLauncher.exe", "Teams.exe", "ms-teams.exe", "MSTeams.exe"],
+      "names": ["zoom.us", "Zoom", "Zoom Workplace", "Microsoft Teams", "Google Meet"]
+    },
+    "AI": {
+      "bundleIds": ["com.openai.chat", "com.anthropic.claudefordesktop", "com.microsoft.m365copilot", "com.microsoft.copilot-mac", "ai.perplexity.mac", "com.google.GeminiMacOS"],
+      "exes": ["ChatGPT.exe", "Claude.exe", "Copilot.exe", "M365Copilot.exe", "Perplexity.exe"],
+      "names": ["ChatGPT", "Claude", "Copilot", "Perplexity", "Gemini"]
+    },
+    "WORD": {
+      "bundleIds": ["com.microsoft.Word", "com.apple.iWork.Pages", "com.apple.Pages", "org.libreoffice.script", "com.kingsoft.wpsoffice.mac"],
+      "exes": ["WINWORD.EXE", "soffice.exe", "soffice.bin", "swriter.exe", "wps.exe"],
+      "names": ["Microsoft Word", "Pages", "LibreOffice", "WPS Office"]
+    },
+    "NOTES": {
+      "bundleIds": ["com.apple.Notes", "com.apple.Stickies", "com.apple.TextEdit", "md.obsidian", "notion.id", "com.microsoft.onenote.mac", "com.evernote.Evernote", "net.shinyfrog.bear"],
+      "exes": ["notepad.exe", "notepad++.exe", "ONENOTE.EXE", "Microsoft.Notes.exe", "Notion.exe", "Obsidian.exe", "Evernote.exe", "wordpad.exe"],
+      "names": ["Notes", "Stickies", "TextEdit", "Notepad", "OneNote", "Sticky Notes", "Notion", "Obsidian", "Evernote", "Bear"]
+    },
+    "PDF": {
+      "bundleIds": ["com.apple.Preview", "com.adobe.Acrobat.Pro", "com.adobe.Reader", "com.readdle.PDFExpert-Mac", "net.sourceforge.skim-app.skim"],
+      "exes": ["Acrobat.exe", "AcroRd32.exe", "FoxitPDFReader.exe", "FoxitReader.exe", "SumatraPDF.exe", "PDFXEdit.exe"],
+      "names": ["Preview", "Acrobat", "PDF Expert", "Foxit", "Skim", "SumatraPDF"]
+    },
+    "COMMUNICATION": {
+      "bundleIds": ["com.hnc.Discord", "com.tinyspeck.slackmacgap", "ru.keepcoder.Telegram", "org.telegram.desktop", "net.whatsapp.WhatsApp", "desktop.WhatsApp", "com.viber.osx", "com.facebook.archon", "com.facebook.archon.developerID", "com.apple.MobileSMS"],
+      "exes": ["Discord.exe", "Slack.exe", "Telegram.exe", "WhatsApp.exe", "Viber.exe", "Messenger.exe"],
+      "names": ["Discord", "Slack", "Telegram", "WhatsApp", "Viber", "Messenger", "Messages"]
+    },
+    "REMOTE": {
+      "bundleIds": ["com.philandro.anydesk", "com.teamviewer.TeamViewer", "com.teamviewer.TeamViewerHost", "com.teamviewer.TeamViewerQS", "com.google.chromeremotedesktop.me2me-host"],
+      "exes": ["AnyDesk.exe", "TeamViewer.exe", "TeamViewer_Service.exe", "TeamViewerQS.exe", "remoting_host.exe", "remoting_desktop.exe"],
+      "names": ["AnyDesk", "TeamViewer", "Chrome Remote Desktop", "ChromeRemoteDesktopHost", "remoting_me2me_host"]
+    },
+    "BROWSER": {
+      "bundleIds": ["com.apple.Safari", "org.mozilla.firefox", "com.google.Chrome", "com.google.Chrome.beta", "com.google.Chrome.canary", "com.microsoft.edgemac", "com.brave.Browser", "org.chromium.Chromium", "company.thebrowser.Browser", "com.operasoftware.Opera", "com.vivaldi.Vivaldi"],
+      "exes": ["chrome.exe", "msedge.exe", "firefox.exe", "brave.exe", "opera.exe", "vivaldi.exe", "Arc.exe"],
+      "names": ["Safari", "Firefox", "Google Chrome", "Microsoft Edge", "Brave Browser", "Chromium", "Arc", "Opera", "Vivaldi"]
+    }
+  },
+  "browserFamilies": {
+    "Google Chrome": {
+      "bundleIds": ["com.google.Chrome", "com.google.Chrome.beta", "com.google.Chrome.dev", "com.google.Chrome.canary"],
+      "exes": ["chrome.exe"],
+      "names": ["Google Chrome"]
+    },
+    "Microsoft Edge": {
+      "bundleIds": ["com.microsoft.edgemac", "com.microsoft.edgemac.Beta", "com.microsoft.edgemac.Dev", "com.microsoft.edgemac.Canary"],
+      "exes": ["msedge.exe"],
+      "names": ["Microsoft Edge"]
+    },
+    "Brave": {
+      "bundleIds": ["com.brave.Browser", "com.brave.Browser.beta", "com.brave.Browser.nightly"],
+      "exes": ["brave.exe"],
+      "names": ["Brave Browser", "Brave"]
+    },
+    "Chromium": {
+      "bundleIds": ["org.chromium.Chromium"],
+      "exes": ["chrome.exe", "chromium.exe"],
+      "names": ["Chromium"]
+    }
+  }
+}

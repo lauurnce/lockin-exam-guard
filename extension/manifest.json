@@ -1,0 +1,62 @@
+{
+  "manifest_version": 3,
+  "name": "LockIn Exam Guard",
+  "short_name": "LockIn",
+  "version": "1.0.0",
+  "description": "Minimal exam lockdown for Google Forms. Gray when off, green when locked in, red when triggered.",
+  "minimum_chrome_version": "120",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmgtEc5Vhk1DXmykID8na8iJVMJwwn8hYWbnFYXTN3aCA6FWZqQf+QwSIXdQaqW8GED1xC7d23MkWkKX8JWpUtWa2Ff4i/EJKzzc8wCqvM2eN5KdlkOtujpS+ib/5U7lPD19zf+C8eK/7AyV5Ui1/oHKY0DneHyj85gEa5Jcee6WfgH0q4Swstci86jOU2UyKgT/3rJiOn+CxBEYfkeqHzfNONHHorYqvFhMinj8/B+xHY1pEm4wwNv98W57L/n5eqWwkT5kjthO22E9pr02eHA1oxldYmTSjtZTVy+Q7Ra66JMMhtctj1Xds10yBCoygQ8HpxTomuhM8TZ1iKkthLQIDAQAB",
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms",
+    "webNavigation",
+    "nativeMessaging",
+    "notifications"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "LockIn: Off",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://docs.google.com/forms/*"
+      ],
+      "js": [
+        "content/pill.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "blocked/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}
